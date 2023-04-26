@@ -38,7 +38,11 @@ public class Board extends JPanel {
     private int all_cells;
     private JLabel statusbar;
 
+    // declaring random one type and reusing it
+    private Random random;
+
     public Board(JLabel statusbar) {
+
         this.statusbar = statusbar;
 
         img = new Image[NUM_IMAGES];
@@ -56,7 +60,6 @@ public class Board extends JPanel {
 
     public void newGame() {
 
-        Random random;
         int current_col;
 
         int i = 0;
