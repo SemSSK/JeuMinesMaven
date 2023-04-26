@@ -1,4 +1,4 @@
-* documentation absent.
+* une documentation absente.
 * aucun test unitaire.
 * code non commenté.
 * logic et affichage au meme endroit mauvaise utilisation de l'orienté objet.
