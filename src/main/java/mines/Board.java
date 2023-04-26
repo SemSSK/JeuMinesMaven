@@ -28,18 +28,18 @@ public class Board extends JPanel {
     private final int DRAW_MARK = 11;
     private final int DRAW_WRONG_MARK = 12;
 
-    private int[] field;
-    private boolean inGame;
-    private int mines_left;
+    private boolean inGame = true;
     private Image[] img;
     private int mines = 40;
     private int rows = 16;
     private int cols = 16;
-    private int all_cells;
+    private int all_cells = rows * cols;
+    private int[] field = new int[all_cells];
+    private int mines_left = mines;
     private JLabel statusbar;
 
     // declaring random one type and reusing it
-    private Random random;
+    private Random random = new Random();
 
     public Board(JLabel statusbar) {
 
@@ -58,17 +58,19 @@ public class Board extends JPanel {
         newGame();
     }
 
-    public void newGame() {
-
-        // int i = 0; removed because can be declared in loop
-        int position = 0;
-
-        random = new Random();
+    public void Restart() {
         inGame = true;
-        mines_left = mines;
-
+        mines = 40;
+        rows = 16;
+        cols = 16;
         all_cells = rows * cols;
         field = new int[all_cells];
+        mines_left = mines;
+        newGame();
+        repaint();
+    }
+
+    public void newGame() {
 
         for (int i = 0; i < all_cells; i++)
             field[i] = COVER_FOR_CELL;
@@ -77,10 +79,9 @@ public class Board extends JPanel {
 
         for (int i = 0; i < mines; i++) {
 
-            position = (int) (all_cells * random.nextDouble());
+            int position = (int) (all_cells * random.nextDouble());
 
-            if ((position < all_cells) &&
-                    (field[position] != COVERED_MINE_CELL)) {
+            if ((position < all_cells) && (field[position] != COVERED_MINE_CELL)) {
 
                 int current_col = position % cols;
                 int current_row = (position - current_col) / cols;
@@ -99,7 +100,6 @@ public class Board extends JPanel {
                         }
                     }
                 }
-                // better code
             }
         }
     }
@@ -236,8 +236,7 @@ public class Board extends JPanel {
             boolean rep = false;
 
             if (!inGame) {
-                newGame();
-                repaint();
+                Restart();
             }
 
             if ((x < cols * CELL_SIZE) && (y < rows * CELL_SIZE)) {
