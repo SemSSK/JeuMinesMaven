@@ -62,7 +62,7 @@ public class Board extends JPanel {
 
         int current_col;
 
-        int i = 0;
+        // int i = 0; removed because can be declared in loop
         int position = 0;
         int cell = 0;
 
@@ -73,12 +73,12 @@ public class Board extends JPanel {
         all_cells = rows * cols;
         field = new int[all_cells];
 
-        for (i = 0; i < all_cells; i++)
+        for (int i = 0; i < all_cells; i++)
             field[i] = COVER_FOR_CELL;
 
         statusbar.setText(Integer.toString(mines_left));
 
-        i = 0;
+        int i = 0;
         while (i < mines) {
 
             position = (int) (all_cells * random.nextDouble());
