@@ -105,78 +105,24 @@ public class Board extends JPanel {
     }
 
     public void find_empty_cells(int j) {
-
         int current_col = j % cols;
-        int cell;
+        int current_row = (j - current_col) / cols;
+        int start_x = Math.max(current_col - 1, 0);
+        int end_x = Math.min(current_col + 1, cols - 1);
+        int start_y = Math.max(current_row - 1, 0);
+        int end_y = Math.min(current_row + 1, rows - 1);
 
-        if (current_col > 0) {
-            cell = j - cols - 1;
-            if (cell >= 0)
+        for (int x = start_x; x <= end_x; x++) {
+            for (int y = start_y; y <= end_y; y++) {
+                int cell = y * cols + x;
                 if (field[cell] > MINE_CELL) {
                     field[cell] -= COVER_FOR_CELL;
-                    if (field[cell] == EMPTY_CELL)
+                    if (field[cell] == EMPTY_CELL) {
                         find_empty_cells(cell);
+                    }
                 }
-
-            cell = j - 1;
-            if (cell >= 0)
-                if (field[cell] > MINE_CELL) {
-                    field[cell] -= COVER_FOR_CELL;
-                    if (field[cell] == EMPTY_CELL)
-                        find_empty_cells(cell);
-                }
-
-            cell = j + cols - 1;
-            if (cell < all_cells)
-                if (field[cell] > MINE_CELL) {
-                    field[cell] -= COVER_FOR_CELL;
-                    if (field[cell] == EMPTY_CELL)
-                        find_empty_cells(cell);
-                }
-        }
-
-        cell = j - cols;
-        if (cell >= 0)
-            if (field[cell] > MINE_CELL) {
-                field[cell] -= COVER_FOR_CELL;
-                if (field[cell] == EMPTY_CELL)
-                    find_empty_cells(cell);
             }
-
-        cell = j + cols;
-        if (cell < all_cells)
-            if (field[cell] > MINE_CELL) {
-                field[cell] -= COVER_FOR_CELL;
-                if (field[cell] == EMPTY_CELL)
-                    find_empty_cells(cell);
-            }
-
-        if (current_col < (cols - 1)) {
-            cell = j - cols + 1;
-            if (cell >= 0)
-                if (field[cell] > MINE_CELL) {
-                    field[cell] -= COVER_FOR_CELL;
-                    if (field[cell] == EMPTY_CELL)
-                        find_empty_cells(cell);
-                }
-
-            cell = j + cols + 1;
-            if (cell < all_cells)
-                if (field[cell] > MINE_CELL) {
-                    field[cell] -= COVER_FOR_CELL;
-                    if (field[cell] == EMPTY_CELL)
-                        find_empty_cells(cell);
-                }
-
-            cell = j + 1;
-            if (cell < all_cells)
-                if (field[cell] > MINE_CELL) {
-                    field[cell] -= COVER_FOR_CELL;
-                    if (field[cell] == EMPTY_CELL)
-                        find_empty_cells(cell);
-                }
         }
-
     }
 
     public void paint(Graphics g) {
