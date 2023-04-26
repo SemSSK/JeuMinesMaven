@@ -237,9 +237,7 @@ public class Board extends JPanel {
 
             if (!inGame) {
                 Restart();
-            }
-
-            if ((x < cols * CELL_SIZE) && (y < rows * CELL_SIZE)) {
+            } else if ((x < cols * CELL_SIZE) && (y < rows * CELL_SIZE)) {
 
                 if (e.getButton() == MouseEvent.BUTTON3) {
 
