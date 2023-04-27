@@ -130,7 +130,6 @@ public class Board extends JPanel {
 
     public void paint(Graphics g) {
 
-        int cell = 0;
         int uncover = 0;
 
         if (mines_left > 0)
@@ -141,10 +140,7 @@ public class Board extends JPanel {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
 
-                cell = field[(i * cols) + j];
-
-                if (inGame && cell == MINE_CELL)
-                    inGame = false;
+                int cell = field[(i * cols) + j];
 
                 if (!inGame) {
                     if (cell == COVERED_MINE_CELL)
@@ -182,41 +178,46 @@ public class Board extends JPanel {
 
             int x = e.getX();
             int y = e.getY();
-
             int cCol = x / CELL_SIZE;
             int cRow = y / CELL_SIZE;
+
+            int position = (cRow * cols) + cCol;
 
             boolean rep = false;
 
             if (!inGame) {
                 Restart();
-            } else if ((cCol < cols) && (cRow < rows)) {
+            } else if (position <= all_cells) {
 
                 if (e.getButton() == MouseEvent.BUTTON3) {
 
-                    if (field[(cRow * cols) + cCol] > MINE_CELL) {
+                    if (field[position] > MINE_CELL) {
                         rep = true;
-                        if (field[(cRow * cols) + cCol] <= COVERED_MINE_CELL && mines_left > 0) {
-                            field[(cRow * cols) + cCol] += MARK_FOR_CELL;
+                        if (field[position] <= COVERED_MINE_CELL && mines_left > 0) {
+                            field[position] += MARK_FOR_CELL;
                             mines_left--;
                         } else {
-                            field[(cRow * cols) + cCol] -= MARK_FOR_CELL;
+                            field[position] -= MARK_FOR_CELL;
                             mines_left++;
                         }
                     }
 
                 } else {
 
-                    if ((field[(cRow * cols) + cCol] > MINE_CELL) &&
-                            (field[(cRow * cols) + cCol] < MARKED_MINE_CELL)) {
+                    if (field[position] > COVERED_MINE_CELL) {
+                        return;
+                    }
 
-                        field[(cRow * cols) + cCol] -= COVER_FOR_CELL;
+                    if ((field[position] > MINE_CELL) &&
+                            (field[position] < MARKED_MINE_CELL)) {
+
+                        field[position] -= COVER_FOR_CELL;
                         rep = true;
 
-                        if (field[(cRow * cols) + cCol] == MINE_CELL)
+                        if (field[position] == MINE_CELL)
                             inGame = false;
-                        if (field[(cRow * cols) + cCol] == EMPTY_CELL)
-                            find_empty_cells((cRow * cols) + cCol);
+                        if (field[position] == EMPTY_CELL)
+                            find_empty_cells(position);
                     }
                 }
 
