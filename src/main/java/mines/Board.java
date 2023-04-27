@@ -184,6 +184,35 @@ public class Board extends JPanel {
 
     class MinesAdapter extends MouseAdapter {
 
+        public boolean manageRightClickCase(int position) {
+            if (field[position] > MINE_CELL) {
+                if (field[position] <= COVERED_MINE_CELL && mines_left > 0) {
+                    field[position] += MARK_FOR_CELL;
+                    mines_left--;
+                } else {
+                    field[position] -= MARK_FOR_CELL;
+                    mines_left++;
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public boolean manageLeftClickCase(int position) {
+            if ((field[position] >= COVER_FOR_CELL) &&
+                    (field[position] < COVER_FOR_CELL + MARK_FOR_CELL)) {
+
+                field[position] -= COVER_FOR_CELL;
+                if (field[position] == MINE_CELL)
+                    gameState = GameStates.Lost;
+                if (field[position] == EMPTY_CELL)
+                    find_empty_cells(position);
+
+                return true;
+            }
+            return false;
+        }
+
         public void mousePressed(MouseEvent e) {
 
             int x = e.getX();
@@ -200,31 +229,9 @@ public class Board extends JPanel {
             } else if (position <= all_cells) {
 
                 if (e.getButton() == MouseEvent.BUTTON3) {
-
-                    if (field[position] > MINE_CELL) {
-                        rep = true;
-                        if (field[position] <= COVERED_MINE_CELL && mines_left > 0) {
-                            field[position] += MARK_FOR_CELL;
-                            mines_left--;
-                        } else {
-                            field[position] -= MARK_FOR_CELL;
-                            mines_left++;
-                        }
-                    }
-
+                    rep = manageRightClickCase(position);
                 } else {
-
-                    if ((field[position] >= COVER_FOR_CELL) &&
-                            (field[position] < COVER_FOR_CELL + MARK_FOR_CELL)) {
-
-                        field[position] -= COVER_FOR_CELL;
-                        rep = true;
-
-                        if (field[position] == MINE_CELL)
-                            gameState = GameStates.Lost;
-                        if (field[position] == EMPTY_CELL)
-                            find_empty_cells(position);
-                    }
+                    rep = manageLeftClickCase(position);
                 }
 
                 if (rep)
