@@ -81,7 +81,10 @@ public class Board extends JPanel {
 
             int position = (int) (all_cells * random.nextDouble());
 
-            if ((position < all_cells) && (field[position] != COVERED_MINE_CELL)) {
+            while ((field[position] == COVERED_MINE_CELL))
+                position = (int) (all_cells * random.nextDouble());
+
+            if ((position < all_cells)) {
 
                 int current_col = position % cols;
                 int current_row = (position - current_col) / cols;
