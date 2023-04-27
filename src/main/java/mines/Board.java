@@ -28,7 +28,7 @@ public class Board extends JPanel {
     private final int DRAW_MARK = 11;
     private final int DRAW_WRONG_MARK = 12;
 
-    private boolean inGame = true;
+    private GameStates gameState = GameStates.InGame;
     private Image[] img;
     private int mines = 40;
     private int rows = 16;
@@ -59,7 +59,7 @@ public class Board extends JPanel {
     }
 
     public void Restart() {
-        inGame = true;
+        gameState = GameStates.InGame;
         mines = 40;
         rows = 16;
         cols = 16;
@@ -128,9 +128,38 @@ public class Board extends JPanel {
         }
     }
 
-    public void paint(Graphics g) {
+    public void updateGameState() {
+        int n_covered_mines = 0;
+        for (int i = 0; i < all_cells; i++) {
+            if (field[i] == COVERED_MINE_CELL) {
+                n_covered_mines++;
+            }
+        }
+        if (n_covered_mines == 0)
+            gameState = GameStates.Won;
+    }
 
-        int uncover = 0;
+    public int getCellStateToDraw(int cell) {
+        if (gameState != GameStates.InGame) {
+            if (cell == COVERED_MINE_CELL)
+                cell = DRAW_MINE;
+            else if (cell == MARKED_MINE_CELL)
+                cell = DRAW_MARK;
+            else if (cell > COVERED_MINE_CELL)
+                cell = DRAW_WRONG_MARK;
+            else if (cell > MINE_CELL)
+                cell = DRAW_COVER;
+        } else {
+            if (cell > COVERED_MINE_CELL)
+                cell = DRAW_MARK;
+            else if (cell > MINE_CELL) {
+                cell = DRAW_COVER;
+            }
+        }
+        return cell;
+    }
+
+    public void paint(Graphics g) {
 
         if (mines_left > 0)
             statusbar.setText(Integer.toString(mines_left));
@@ -142,33 +171,14 @@ public class Board extends JPanel {
 
                 int cell = field[(i * cols) + j];
 
-                if (!inGame) {
-                    if (cell == COVERED_MINE_CELL)
-                        cell = DRAW_MINE;
-                    else if (cell == MARKED_MINE_CELL)
-                        cell = DRAW_MARK;
-                    else if (cell > COVERED_MINE_CELL)
-                        cell = DRAW_WRONG_MARK;
-                    else if (cell > MINE_CELL)
-                        cell = DRAW_COVER;
-                } else {
-                    if (cell > COVERED_MINE_CELL)
-                        cell = DRAW_MARK;
-                    else if (cell > MINE_CELL) {
-                        cell = DRAW_COVER;
-                        uncover++;
-                    }
-                }
-
-                g.drawImage(img[cell], (j * CELL_SIZE),
+                g.drawImage(img[getCellStateToDraw(cell)], (j * CELL_SIZE),
                         (i * CELL_SIZE), this);
             }
         }
 
-        if (uncover == 0 && inGame) {
-            inGame = false;
+        if (gameState == GameStates.Won) {
             statusbar.setText("Game won");
-        } else if (!inGame)
+        } else if (gameState == GameStates.Lost)
             statusbar.setText("Game lost");
     }
 
@@ -185,7 +195,7 @@ public class Board extends JPanel {
 
             boolean rep = false;
 
-            if (!inGame) {
+            if (gameState != GameStates.InGame) {
                 Restart();
             } else if (position <= all_cells) {
 
@@ -215,7 +225,7 @@ public class Board extends JPanel {
                         rep = true;
 
                         if (field[position] == MINE_CELL)
-                            inGame = false;
+                            gameState = GameStates.Lost;
                         if (field[position] == EMPTY_CELL)
                             find_empty_cells(position);
                     }
