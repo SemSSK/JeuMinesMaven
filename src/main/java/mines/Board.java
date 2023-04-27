@@ -177,6 +177,7 @@ public class Board extends JPanel {
     }
 
     class MinesAdapter extends MouseAdapter {
+
         public void mousePressed(MouseEvent e) {
 
             int x = e.getX();
@@ -189,7 +190,7 @@ public class Board extends JPanel {
 
             if (!inGame) {
                 Restart();
-            } else if ((x < cols * CELL_SIZE) && (y < rows * CELL_SIZE)) {
+            } else if ((cCol < cols) && (cRow < rows)) {
 
                 if (e.getButton() == MouseEvent.BUTTON3) {
 
