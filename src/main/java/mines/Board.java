@@ -196,12 +196,9 @@ public class Board extends JPanel {
 
                     if (field[(cRow * cols) + cCol] > MINE_CELL) {
                         rep = true;
-
-                        if (field[(cRow * cols) + cCol] <= COVERED_MINE_CELL) {
-                            if (mines_left > 0) {
-                                field[(cRow * cols) + cCol] += MARK_FOR_CELL;
-                                mines_left--;
-                            }
+                        if (field[(cRow * cols) + cCol] <= COVERED_MINE_CELL && mines_left > 0) {
+                            field[(cRow * cols) + cCol] += MARK_FOR_CELL;
+                            mines_left--;
                         } else {
                             field[(cRow * cols) + cCol] -= MARK_FOR_CELL;
                             mines_left++;
@@ -209,10 +206,6 @@ public class Board extends JPanel {
                     }
 
                 } else {
-
-                    if (field[(cRow * cols) + cCol] > COVERED_MINE_CELL) {
-                        return;
-                    }
 
                     if ((field[(cRow * cols) + cCol] > MINE_CELL) &&
                             (field[(cRow * cols) + cCol] < MARKED_MINE_CELL)) {
