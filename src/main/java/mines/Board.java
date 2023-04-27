@@ -133,6 +133,11 @@ public class Board extends JPanel {
         int cell = 0;
         int uncover = 0;
 
+        if (mines_left > 0)
+            statusbar.setText(Integer.toString(mines_left));
+        else
+            statusbar.setText("No marks left");
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
 
@@ -142,16 +147,14 @@ public class Board extends JPanel {
                     inGame = false;
 
                 if (!inGame) {
-                    if (cell == COVERED_MINE_CELL) {
+                    if (cell == COVERED_MINE_CELL)
                         cell = DRAW_MINE;
-                    } else if (cell == MARKED_MINE_CELL) {
+                    else if (cell == MARKED_MINE_CELL)
                         cell = DRAW_MARK;
-                    } else if (cell > COVERED_MINE_CELL) {
+                    else if (cell > COVERED_MINE_CELL)
                         cell = DRAW_WRONG_MARK;
-                    } else if (cell > MINE_CELL) {
+                    else if (cell > MINE_CELL)
                         cell = DRAW_COVER;
-                    }
-
                 } else {
                     if (cell > COVERED_MINE_CELL)
                         cell = DRAW_MARK;
@@ -197,14 +200,10 @@ public class Board extends JPanel {
                             if (mines_left > 0) {
                                 field[(cRow * cols) + cCol] += MARK_FOR_CELL;
                                 mines_left--;
-                                statusbar.setText(Integer.toString(mines_left));
-                            } else
-                                statusbar.setText("No marks left");
+                            }
                         } else {
-
                             field[(cRow * cols) + cCol] -= MARK_FOR_CELL;
                             mines_left++;
-                            statusbar.setText(Integer.toString(mines_left));
                         }
                     }
 
