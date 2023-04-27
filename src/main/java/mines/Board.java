@@ -214,12 +214,8 @@ public class Board extends JPanel {
 
                 } else {
 
-                    if (field[position] > COVERED_MINE_CELL) {
-                        return;
-                    }
-
-                    if ((field[position] > MINE_CELL) &&
-                            (field[position] < MARKED_MINE_CELL)) {
+                    if ((field[position] >= COVER_FOR_CELL) &&
+                            (field[position] < COVER_FOR_CELL + MARK_FOR_CELL)) {
 
                         field[position] -= COVER_FOR_CELL;
                         rep = true;
