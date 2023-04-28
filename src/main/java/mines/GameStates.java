@@ -1,7 +1,7 @@
 package mines;
 
 public enum GameStates {
-  InGame,
-  Won,
-  Lost
+  IN_GAME,
+  WON,
+  LOST
 }
