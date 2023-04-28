@@ -176,6 +176,8 @@ public class Board extends JPanel {
             }
         }
 
+        updateGameState();
+
         if (gameState == GameStates.Won) {
             statusbar.setText("Game won");
         } else if (gameState == GameStates.Lost)
@@ -226,7 +228,7 @@ public class Board extends JPanel {
 
             if (gameState != GameStates.InGame) {
                 Restart();
-            } else if (position <= all_cells) {
+            } else if (cCol < cols && cRow < rows) {
 
                 if (e.getButton() == MouseEvent.BUTTON3) {
                     rep = manageRightClickCase(position);
