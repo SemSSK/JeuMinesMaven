@@ -1,0 +1,188 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\hypertarget{class-board}{%
+\section{Class Board}\label{class-board}}
+
+The Board class extends the JPanel class, and it represents the
+Minesweeper board. The board consists of cells, some of which contain
+mines. The objective of the game is to uncover all cells that do not
+contain mines without detonating any of the cells that do contain mines.
+
+\hypertarget{attributes}{%
+\section{Attributes}\label{attributes}}
+
+\begin{itemize}
+\tightlist
+\item
+  NUM\_IMAGES: A constant integer representing the number of images
+  available for the cells on the board.
+\item
+  CELL\_SIZE: A constant integer representing the size of each cell on
+  the board.
+\item
+  COVER\_FOR\_CELL: A constant integer representing the value assigned
+  to a cell that is covered.
+\item
+  MARK\_FOR\_CELL: A constant integer representing the value assigned to
+  a cell that has been marked with a flag.
+\item
+  EMPTY\_CELL: A constant integer representing the value assigned to a
+  cell that is not covered and does not contain a mine.
+\item
+  MINE\_CELL: A constant integer representing the value assigned to a
+  cell that contains a mine.
+\item
+  COVERED\_MINE\_CELL: A constant integer representing the value
+  assigned to a cell that contains a mine and is covered.
+\item
+  MARKED\_MINE\_CELL: A constant integer representing the value assigned
+  to a cell that contains a mine and has been marked with a flag.
+\item
+  DRAW\_MINE: A constant integer representing the index of the image
+  that represents a mine.
+\item
+  DRAW\_COVER: A constant integer representing the index of the image
+  that represents a covered cell.
+\item
+  DRAW\_MARK: A constant integer representing the index of the image
+  that represents a cell that has been marked with a flag.
+\item
+  DRAW\_WRONG\_MARK: A constant integer representing the index of the
+  image that represents a cell that has been marked with a flag but does
+  not contain a mine.
+\item
+  field: An integer array that represents the state of each cell on the
+  board. The value assigned to each cell is determined by the constants
+  described above.
+\item
+  inGame: A boolean value that represents whether the game is currently
+  in progress.
+\item
+  mines\_left: An integer representing the number of mines that have not
+  been marked with a flag.
+\item
+  img: An array of Image objects representing the images that can be
+  displayed on the cells.
+\item
+  mines: An integer representing the number of mines on the board.
+\item
+  rows: An integer representing the number of rows on the board.
+\item
+  cols: An integer representing the number of columns on the board.
+\item
+  all\_cells: An integer representing the total number of cells on the
+  board.
+\item
+  statusbar: A JLabel object representing the status bar at the bottom
+  of the game window.
+\end{itemize}
+
+\hypertarget{constructor}{%
+\subsection{Constructor}\label{constructor}}
+
+\hypertarget{public-boardjlabel-statusbar}{%
+\subsubsection{public Board(JLabel
+statusbar)}\label{public-boardjlabel-statusbar}}
+
+The constructor creates a new Board object and sets the statusbar field
+to the specified JLabel object. It initializes the img field by loading
+the images from the ``images'' directory. It sets the double buffer of
+the panel to true, adds a MouseListener to the panel, and calls the
+newGame() method to start a new game.
+
+\hypertarget{methods}{%
+\subsection{Methods}\label{methods}}
+
+\hypertarget{public-void-newgame}{%
+\subsubsection{public void newGame()}\label{public-void-newgame}}
+
+This method starts a new game by initializing the field array to contain
+only covered cells, setting the inGame flag to true, and setting the
+number of mines left to the total number of mines. It then randomly
+places the specified number of mines on the board and updates the values
+of the cells surrounding the mines to indicate the number of mines in
+the adjacent cells. private void find\_empty\_cells(int j)
+
+This method is called when a cell that does not contain a mine is
+uncovered. It recursively uncovers all adjacent cells that do not
+contain mines. The parameter j is the index of the current cell in the
+
+\hypertarget{public-void-paint}{%
+\subsection{public void paint}\label{public-void-paint}}
+
+The \texttt{paint} method is responsible for painting the Board in the
+window. The code is divided into three parts: covering the cells with an
+image that hides the content, displaying the content of a cell according
+to the value in the field array, and displaying the game status
+(win/lose).
+
+\hypertarget{mouseadapter}{%
+\section{MouseAdapter}\label{mouseadapter}}
+
+\texttt{MouseAdapter} is a convenience class that implements the
+\texttt{MouseListener} interface. The \texttt{MouseListener} interface
+is used to receive mouse events. This class has empty implementations
+for all methods defined in the \texttt{MouseListener} interface.
+
+The \texttt{MinesAdapter} class is an inner class of the \texttt{Board}
+class and is used to handle mouse events. This class overrides the
+\texttt{mousePressed} method to handle left and right mouse clicks.
+Left-clicking on a covered cell will uncover the cell, and
+right-clicking on a covered cell will mark the cell with a flag.
+Left-clicking on an uncovered cell will reveal its content, and
+right-clicking on an uncovered cell will remove the flag. The method
+also checks the game status and updates the game accordingly.
+
+\end{document}
