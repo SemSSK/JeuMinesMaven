@@ -179,7 +179,7 @@ public class Board extends JPanel {
                 field[position].unCoverCell();
                 if (field[position].isMineCell())
                     gameState = GameStates.LOST;
-                if (field[position].isEmptyCell())
+                else if (field[position].isEmptyCell())
                     findEmptyCells(position);
 
                 return true;

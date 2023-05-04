@@ -64,7 +64,7 @@ public class Cell {
     if (isMarkedCell()) {
       unMarkCell();
       marksLeft++;
-    } else if (marksLeft > 0) {
+    } else if (isCoveredCell() && marksLeft > 0) {
       markCell();
       marksLeft--;
     }
