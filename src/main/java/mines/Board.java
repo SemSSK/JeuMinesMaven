@@ -22,7 +22,7 @@ public class Board extends JPanel {
     private int rows = 16;
     private int cols = 16;
     private int allCells = rows * cols;
-    private Cell[] field = new Cell[allCells];
+    private transient Cell[] field = new Cell[allCells];
     private int marksLeft = mines;
     private JLabel statusbar;
 
