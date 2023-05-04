@@ -23,7 +23,7 @@ public class Board extends JPanel {
     private int cols = 16;
     private int allCells = rows * cols;
     private Cell[] field = new Cell[allCells];
-    private int minesLeft = mines;
+    private int marksLeft = mines;
     private JLabel statusbar;
 
     // declaring random one type and reusing it
@@ -60,7 +60,7 @@ public class Board extends JPanel {
         for (int i = 0; i < allCells; i++) {
             field[i] = new Cell();
         }
-        minesLeft = mines;
+        marksLeft = mines;
         newGame();
         repaint();
     }
@@ -88,7 +88,6 @@ public class Board extends JPanel {
             int currentCol = position % cols;
             int currentRow = (position - currentCol) / cols;
             field[position].coverMineCell();
-            ;
 
             int startX = Math.max(currentCol - 1, 0);
             int endX = Math.min(currentCol + 1, cols - 1);
@@ -141,8 +140,8 @@ public class Board extends JPanel {
     @Override
     public void paint(Graphics g) {
 
-        if (minesLeft > 0)
-            statusbar.setText(Integer.toString(minesLeft));
+        if (marksLeft > 0)
+            statusbar.setText(Integer.toString(marksLeft));
         else
             statusbar.setText("No marks left");
 
@@ -167,18 +166,10 @@ public class Board extends JPanel {
     class MinesAdapter extends MouseAdapter {
 
         private boolean manageRightClickCase(int position) {
-            if (field[position].isCoveredCell()) {
-                if (!field[position].isMarkedCell() && minesLeft > 0) {
-                    field[position].markCell();
-                    minesLeft--;
-                } else {
-                    field[position].unMarkCell();
-                    ;
-                    minesLeft++;
-                }
-                return true;
-            }
-            return false;
+            int newMarksLeft = field[position].toggleCellMark(marksLeft);
+            boolean redraw = newMarksLeft != marksLeft;
+            marksLeft = newMarksLeft;
+            return redraw;
         }
 
         private boolean manageLeftClickCase(int position) {

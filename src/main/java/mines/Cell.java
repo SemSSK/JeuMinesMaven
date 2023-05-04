@@ -52,12 +52,23 @@ public class Cell {
     state = COVERED_MINE_CELL;
   }
 
-  public void markCell() {
+  private void markCell() {
     state += MARK_FOR_CELL;
   }
 
-  public void unMarkCell() {
+  private void unMarkCell() {
     state -= MARK_FOR_CELL;
+  }
+
+  public int toggleCellMark(int marksLeft) {
+    if (isMarkedCell()) {
+      unMarkCell();
+      marksLeft++;
+    } else if (marksLeft > 0) {
+      markCell();
+      marksLeft--;
+    }
+    return marksLeft;
   }
 
   public void incrementCellNumber() {
