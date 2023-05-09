@@ -52,10 +52,6 @@ public class Board extends JPanel {
 
     public void restart() {
         gameState = GameStates.IN_GAME;
-        mines = 40;
-        rows = 16;
-        cols = 16;
-        allCells = rows * cols;
         field = new Cell[allCells];
         for (int i = 0; i < allCells; i++) {
             field[i] = new Cell();
