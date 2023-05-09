@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -18,24 +17,14 @@ public class Board extends JPanel {
 
     private GameStates gameState = GameStates.IN_GAME;
     private transient Image[] img;
-    private int mines = 40;
-    private int rows = 16;
-    private int cols = 16;
-    private int allCells = rows * cols;
-    private transient Cell[] field = new Cell[allCells];
-    private int marksLeft = mines;
-    private JLabel statusbar;
 
-    // declaring random one type and reusing it
-    private Random random = new Random();
+    private transient Field field = new Field();
+    private int marksLeft = field.getMines();
+    private JLabel statusbar;
 
     public Board(JLabel statusbar) {
 
         this.statusbar = statusbar;
-
-        for (int i = 0; i < allCells; i++) {
-            field[i] = new Cell();
-        }
 
         img = new Image[NUM_IMAGES];
 
@@ -47,85 +36,21 @@ public class Board extends JPanel {
         setDoubleBuffered(true);
 
         addMouseListener(new Board.MinesAdapter());
-        newGame();
+        field.setupField();
     }
 
     public void restart() {
         gameState = GameStates.IN_GAME;
-        field = new Cell[allCells];
-        for (int i = 0; i < allCells; i++) {
-            field[i] = new Cell();
-        }
-        marksLeft = mines;
-        newGame();
+        marksLeft = field.getMines();
+        field.reset();
+        field.setupField();
         repaint();
-    }
-
-    private int getRandomPosition() {
-        int position;
-        do {
-            position = random.nextInt(0, allCells);
-        } while (field[position].isCoveredMineCell());
-        return position;
-    }
-
-    private void coverCells() {
-        for (int i = 0; i < allCells; i++)
-            field[i].coverCell();
-    }
-
-    public void newGame() {
-
-        coverCells();
-
-        for (int i = 0; i < mines; i++) {
-            int position = getRandomPosition();
-
-            int currentCol = position % cols;
-            int currentRow = (position - currentCol) / cols;
-            field[position].coverMineCell();
-
-            int startX = Math.max(currentCol - 1, 0);
-            int endX = Math.min(currentCol + 1, cols - 1);
-            int startY = Math.max(currentRow - 1, 0);
-            int endY = Math.min(currentRow + 1, rows - 1);
-
-            for (int x = startX; x <= endX; x++) {
-                for (int y = startY; y <= endY; y++) {
-                    int cell = y * cols + x;
-                    if (cell != position && !field[cell].isCoveredMineCell()) {
-                        field[cell].incrementCellNumber();
-                    }
-                }
-            }
-        }
-    }
-
-    public void findEmptyCells(int j) {
-        int currentCol = j % cols;
-        int currentRow = (j - currentCol) / cols;
-        int startX = Math.max(currentCol - 1, 0);
-        int endX = Math.min(currentCol + 1, cols - 1);
-        int startY = Math.max(currentRow - 1, 0);
-        int endY = Math.min(currentRow + 1, rows - 1);
-
-        for (int x = startX; x <= endX; x++) {
-            for (int y = startY; y <= endY; y++) {
-                int cell = y * cols + x;
-                if (field[cell].isCoveredCell()) {
-                    field[cell].unCoverCell();
-                    if (field[cell].isEmptyCell()) {
-                        findEmptyCells(cell);
-                    }
-                }
-            }
-        }
     }
 
     public void updateGameState() {
         int nCoveredMines = 0;
-        for (int i = 0; i < allCells; i++) {
-            if (field[i].isCoveredMineCell()) {
+        for (int i = 0; i < field.getAllCells(); i++) {
+            if (field.getCell(i).isCoveredMineCell()) {
                 nCoveredMines++;
             }
         }
@@ -141,10 +66,10 @@ public class Board extends JPanel {
         else
             statusbar.setText("No marks left");
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < field.getRows(); i++) {
+            for (int j = 0; j < field.getCols(); j++) {
 
-                Cell cell = field[(i * cols) + j];
+                Cell cell = field.getCell((i * field.getCols()) + j);
 
                 g.drawImage(img[cell.getCellStateToDraw(gameState)], (j * CELL_SIZE),
                         (i * CELL_SIZE), this);
@@ -162,21 +87,21 @@ public class Board extends JPanel {
     class MinesAdapter extends MouseAdapter {
 
         private boolean manageRightClickCase(int position) {
-            int newMarksLeft = field[position].toggleCellMark(marksLeft);
+            int newMarksLeft = field.getCell(position).toggleCellMark(marksLeft);
             boolean redraw = newMarksLeft != marksLeft;
             marksLeft = newMarksLeft;
             return redraw;
         }
 
         private boolean manageLeftClickCase(int position) {
-            if ((field[position].isCoveredCell()) &&
-                    (!field[position].isMarkedCell())) {
+            if ((field.getCell(position).isCoveredCell()) &&
+                    (!field.getCell(position).isMarkedCell())) {
 
-                field[position].unCoverCell();
-                if (field[position].isMineCell())
+                field.getCell(position).unCoverCell();
+                if (field.getCell(position).isMineCell())
                     gameState = GameStates.LOST;
-                else if (field[position].isEmptyCell())
-                    findEmptyCells(position);
+                else if (field.getCell(position).isEmptyCell())
+                    field.findEmptyCells(position);
 
                 return true;
             }
@@ -191,13 +116,13 @@ public class Board extends JPanel {
             int cCol = x / CELL_SIZE;
             int cRow = y / CELL_SIZE;
 
-            int position = (cRow * cols) + cCol;
+            int position = (cRow * field.getCols()) + cCol;
 
             boolean rep = false;
 
             if (gameState != GameStates.IN_GAME) {
                 restart();
-            } else if (cCol < cols && cRow < rows) {
+            } else if (cCol < field.getCols() && cRow < field.getRows()) {
 
                 if (e.getButton() == MouseEvent.BUTTON3) {
                     rep = manageRightClickCase(position);
