@@ -20,7 +20,7 @@ public class Field {
   private int getRandomPosition() {
     int position;
     do {
-      position = random.nextInt(0, allCells);
+      position = random.nextInt(allCells);
     } while (cells[position].isCoveredMineCell());
     return position;
   }
