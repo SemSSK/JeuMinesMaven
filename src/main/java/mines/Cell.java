@@ -1,5 +1,11 @@
 package mines;
 
+/**
+ * Decribes the state and behaviour of a Cell in the game
+ * the state of a cell is represented by an integer which depending on its value changes
+ * the classes using this class do not have know about the operations that are responsible for the changes in the states
+ * and only need to interact with the Cell using the public methods it exposes
+ */
 public class Cell {
 
   private static final int COVER_FOR_CELL = 10;
@@ -16,48 +22,89 @@ public class Cell {
 
   private int state;
 
+  /**
+   * @return true if the cell is Empty
+   * @return false otherwise
+   */
   public boolean isEmptyCell() {
     return state == EMPTY_CELL;
   }
 
+  /**
+   * @return true if the cell is a mine
+   * @return false otherwise
+   */
   public boolean isMineCell() {
     return state == MINE_CELL;
   }
 
+  /**
+   * @return true if the cell is covering a mine
+   * @return false otherwise
+   */
   public boolean isCoveredMineCell() {
     return state == COVERED_MINE_CELL;
   }
 
+  /**
+   * @return true if the cell is covered
+   * @return false otherwise
+   */
   public boolean isCoveredCell() {
     return state >= COVER_FOR_CELL;
   }
 
+  /**
+   * @return true if the cell is flagged
+   * @return false otherwise
+   */
   public boolean isMarkedCell() {
     return state >= MARK_FOR_CELL + COVER_FOR_CELL;
   }
 
+  /**
+   * @return true if the cell is flagged and contains a mine
+   * @return false otherwise
+   */
   public boolean isMarkedMineCell() {
     return state == MARKED_MINE_CELL;
   }
 
+  /**
+   * Changes the state of a cell to a covered cell
+   */
   public void coverCell() {
     state = COVER_FOR_CELL;
   }
 
+  /**
+   * Changes the state of a cell to a uncovered cell
+   */
   public void unCoverCell() {
     state -= COVER_FOR_CELL;
   }
 
+  /**
+   * Changes the state of a cell to a covered cell that contains a mine
+   */
   public void coverMineCell() {
     state = COVERED_MINE_CELL;
   }
 
+  /**
+   * Changes the state of a cell to a marked cell
+   */
   private void markCell() {
     state += MARK_FOR_CELL;
   }
 
+  /**
+   * Changes the state of a cell to a covered cell
+   */
   private void unMarkCell() {
-    state -= MARK_FOR_CELL;
+    if (isMarkedCell()) {
+      state -= MARK_FOR_CELL;
+    }
   }
 
   public int toggleCellMark(int marksLeft) {

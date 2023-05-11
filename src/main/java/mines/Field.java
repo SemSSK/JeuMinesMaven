@@ -73,7 +73,7 @@ public class Field {
     for (int x = startX; x <= endX; x++) {
       for (int y = startY; y <= endY; y++) {
         int cell = y * cols + x;
-        if (cells[cell].isCoveredCell()) {
+        if (cells[cell].isCoveredCell() && !cells[cell].isMarkedCell()) {
           cells[cell].unCoverCell();
           if (cells[cell].isEmptyCell()) {
             findEmptyCells(cell);
