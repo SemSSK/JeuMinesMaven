@@ -99,14 +99,16 @@ public class Cell {
   }
 
   /**
-   * Changes the state of a cell to a covered cell
+   * Changes the state of a cell unmarked
    */
   private void unMarkCell() {
-    if (isMarkedCell()) {
       state -= MARK_FOR_CELL;
-    }
   }
 
+  /**
+   * Changes the state of a cell to unmarked if it was marked and to marked if it was unmarked
+   * @return returns the number of marksLeft
+   */
   public int toggleCellMark(int marksLeft) {
     if (isMarkedCell()) {
       unMarkCell();
@@ -118,10 +120,17 @@ public class Cell {
     return marksLeft;
   }
 
+  /**
+   * increments the number of neighbooring cells
+   */
   public void incrementCellNumber() {
     state++;
   }
 
+  /**
+   * @param gameState
+   * @return the index of the image that needs to be displayed
+   */
   public int getCellStateToDraw(GameStates gameState) {
     int cell = state;
     if (gameState != GameStates.IN_GAME) {

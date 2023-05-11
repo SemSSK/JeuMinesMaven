@@ -9,6 +9,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Represents the user interface with the game state
+ * @extends JPanel
+ */
 public class Board extends JPanel {
     private static final long serialVersionUID = 6195235521361212179L;
 
@@ -22,6 +26,13 @@ public class Board extends JPanel {
     private int marksLeft = field.getMines();
     private JLabel statusbar;
 
+    /**
+     * Constructor
+     * @param statusbar
+     * loads the images
+     * initialises the game field
+     * initialises the UI
+     */
     public Board(JLabel statusbar) {
 
         this.statusbar = statusbar;
@@ -39,7 +50,10 @@ public class Board extends JPanel {
         field.setupField();
     }
 
-    public void restart() {
+    /**
+     * Used to reset the game to a fresh start
+     */
+    private void restart() {
         gameState = GameStates.IN_GAME;
         marksLeft = field.getMines();
         field.reset();
@@ -47,7 +61,10 @@ public class Board extends JPanel {
         repaint();
     }
 
-    public void updateGameState() {
+    /**
+     * updates the game state depending on the covered tiles left
+     */
+    private void updateGameState() {
         int nCoveredMines = 0;
         for (int i = 0; i < field.getAllCells(); i++) {
             if (field.getCell(i).isCoveredMineCell()) {
@@ -58,6 +75,12 @@ public class Board extends JPanel {
             gameState = GameStates.WON;
     }
 
+    /**
+     *
+     * @param g  the <code>Graphics</code> context in which to paint
+     * draws the cells of the game
+     * only called when a redraw is necessary in order to avoid wasting draw cycles and reducing the performance
+     */
     @Override
     public void paint(Graphics g) {
 
@@ -84,8 +107,16 @@ public class Board extends JPanel {
             statusbar.setText("Game lost");
     }
 
+    /** @extends MouseAdapter
+     * Captures mouse events and applies the stated actions
+     */
     class MinesAdapter extends MouseAdapter {
 
+        /**
+         * Handles the right click by adding or removing flags on cells
+         * @param position of the cell
+         * @return true if a redraw of the ui is necessary
+         */
         private boolean manageRightClickCase(int position) {
             int newMarksLeft = field.getCell(position).toggleCellMark(marksLeft);
             boolean redraw = newMarksLeft != marksLeft;
@@ -93,6 +124,11 @@ public class Board extends JPanel {
             return redraw;
         }
 
+        /**
+         * Handles leftClick by uncovering the clicked cell
+         * @param position of the cell
+         * @return true if a redraw of the ui is necessary
+         */
         private boolean manageLeftClickCase(int position) {
             if ((field.getCell(position).isCoveredCell()) &&
                     (!field.getCell(position).isMarkedCell())) {
@@ -108,6 +144,10 @@ public class Board extends JPanel {
             return false;
         }
 
+        /**
+         * determines the type of mouse events and dispatches it accordingly to manageRightClickCase or manageLeftClickCase
+         * @param e the event to be processed
+         */
         @Override
         public void mousePressed(MouseEvent e) {
 
