@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 /**
  * Represents the user interface with the game state
- * @extends JPanel
+ * extends JPanel
  */
 public class Board extends JPanel {
     private static final long serialVersionUID = 6195235521361212179L;
