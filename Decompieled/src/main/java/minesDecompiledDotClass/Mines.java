@@ -1,6 +1,5 @@
 package minesDecompiledDotClass;
 
-import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JFrame;
 
@@ -17,7 +16,7 @@ public class Mines extends JFrame
         this.setLocationRelativeTo(null);
         this.setTitle("Minesweeper");
         this.add(this.statusbar = new JLabel(""), "South");
-        this.add(new Board(this.statusbar));
+        this.add(new BoardProcyon(this.statusbar));
         this.setResizable(false);
         this.setVisible(true);
     }

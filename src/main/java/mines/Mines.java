@@ -21,12 +21,9 @@ public class Mines extends JFrame {
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
         setTitle("Minesweeper");
-
         statusbar = new JLabel("");
         add(statusbar, BorderLayout.SOUTH);
-
         add(new Board(statusbar));
-
         setResizable(false);
         setVisible(true);
     }

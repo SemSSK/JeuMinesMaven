@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Board extends JPanel {
+public class BoardIntellijFernflower extends JPanel {
     private static final long serialVersionUID = 6195235521361212179L;
     private final int NUM_IMAGES = 13;
     private final int CELL_SIZE = 15;
@@ -38,7 +38,7 @@ public class Board extends JPanel {
     private int all_cells;
     private JLabel statusbar;
 
-    public Board(JLabel statusbar) {
+    public BoardIntellijFernflower(JLabel statusbar) {
         this.statusbar = statusbar;
         this.img = new Image[13];
 
@@ -258,57 +258,57 @@ public class Board extends JPanel {
             int cCol = x / 15;
             int cRow = y / 15;
             boolean rep = false;
-            if (!Board.this.inGame) {
-                Board.this.newGame();
-                Board.this.repaint();
+            if (!BoardIntellijFernflower.this.inGame) {
+                BoardIntellijFernflower.this.newGame();
+                BoardIntellijFernflower.this.repaint();
             }
 
-            if (x < Board.this.cols * 15 && y < Board.this.rows * 15) {
+            if (x < BoardIntellijFernflower.this.cols * 15 && y < BoardIntellijFernflower.this.rows * 15) {
                 int[] var10000;
                 int var10001;
                 if (e.getButton() == 3) {
-                    if (Board.this.field[cRow * Board.this.cols + cCol] > 9) {
+                    if (BoardIntellijFernflower.this.field[cRow * BoardIntellijFernflower.this.cols + cCol] > 9) {
                         rep = true;
-                        if (Board.this.field[cRow * Board.this.cols + cCol] <= 19) {
-                            if (Board.this.mines_left > 0) {
-                                var10000 = Board.this.field;
-                                var10001 = cRow * Board.this.cols + cCol;
+                        if (BoardIntellijFernflower.this.field[cRow * BoardIntellijFernflower.this.cols + cCol] <= 19) {
+                            if (BoardIntellijFernflower.this.mines_left > 0) {
+                                var10000 = BoardIntellijFernflower.this.field;
+                                var10001 = cRow * BoardIntellijFernflower.this.cols + cCol;
                                 var10000[var10001] += 10;
-                                Board.this.mines_left--;
-                                Board.this.statusbar.setText(Integer.toString(Board.this.mines_left));
+                                BoardIntellijFernflower.this.mines_left--;
+                                BoardIntellijFernflower.this.statusbar.setText(Integer.toString(BoardIntellijFernflower.this.mines_left));
                             } else {
-                                Board.this.statusbar.setText("No marks left");
+                                BoardIntellijFernflower.this.statusbar.setText("No marks left");
                             }
                         } else {
-                            var10000 = Board.this.field;
-                            var10001 = cRow * Board.this.cols + cCol;
+                            var10000 = BoardIntellijFernflower.this.field;
+                            var10001 = cRow * BoardIntellijFernflower.this.cols + cCol;
                             var10000[var10001] -= 10;
-                            Board.this.mines_left++;
-                            Board.this.statusbar.setText(Integer.toString(Board.this.mines_left));
+                            BoardIntellijFernflower.this.mines_left++;
+                            BoardIntellijFernflower.this.statusbar.setText(Integer.toString(BoardIntellijFernflower.this.mines_left));
                         }
                     }
                 } else {
-                    if (Board.this.field[cRow * Board.this.cols + cCol] > 19) {
+                    if (BoardIntellijFernflower.this.field[cRow * BoardIntellijFernflower.this.cols + cCol] > 19) {
                         return;
                     }
 
-                    if (Board.this.field[cRow * Board.this.cols + cCol] > 9 && Board.this.field[cRow * Board.this.cols + cCol] < 29) {
-                        var10000 = Board.this.field;
-                        var10001 = cRow * Board.this.cols + cCol;
+                    if (BoardIntellijFernflower.this.field[cRow * BoardIntellijFernflower.this.cols + cCol] > 9 && BoardIntellijFernflower.this.field[cRow * BoardIntellijFernflower.this.cols + cCol] < 29) {
+                        var10000 = BoardIntellijFernflower.this.field;
+                        var10001 = cRow * BoardIntellijFernflower.this.cols + cCol;
                         var10000[var10001] -= 10;
                         rep = true;
-                        if (Board.this.field[cRow * Board.this.cols + cCol] == 9) {
-                            Board.this.inGame = false;
+                        if (BoardIntellijFernflower.this.field[cRow * BoardIntellijFernflower.this.cols + cCol] == 9) {
+                            BoardIntellijFernflower.this.inGame = false;
                         }
 
-                        if (Board.this.field[cRow * Board.this.cols + cCol] == 0) {
-                            Board.this.find_empty_cells(cRow * Board.this.cols + cCol);
+                        if (BoardIntellijFernflower.this.field[cRow * BoardIntellijFernflower.this.cols + cCol] == 0) {
+                            BoardIntellijFernflower.this.find_empty_cells(cRow * BoardIntellijFernflower.this.cols + cCol);
                         }
                     }
                 }
 
                 if (rep) {
-                    Board.this.repaint();
+                    BoardIntellijFernflower.this.repaint();
                 }
             }
 

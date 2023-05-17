@@ -1,12 +1,9 @@
 package minesDecompiledDotClass;
 
-// certain import declarer mais non utilisé
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
-import java.awt.image.ImageObserver;
 import java.awt.Graphics;
 import java.util.Random;
-import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.Image;
@@ -38,7 +35,7 @@ public class BoardProcyon extends JPanel
     private JLabel statusbar;
 
     // L'initialisation des attributs dans le constructeur plutot que dans leurs declaration
-    public Board(final JLabel statusbar) {
+    public BoardProcyon(final JLabel statusbar) {
         this.mines = 40;
         this.rows = 16;
         this.cols = 16;
@@ -265,54 +262,54 @@ public class BoardProcyon extends JPanel
             final int cCol = x / 15;
             final int cRow = y / 15;
             boolean rep = false;
-            if (!Board.this.inGame) {
-                Board.this.newGame();
-                Board.this.repaint();
+            if (!BoardProcyon.this.inGame) {
+                BoardProcyon.this.newGame();
+                BoardProcyon.this.repaint();
             }
-            if (x < Board.this.cols * 15 && y < Board.this.rows * 15) {
+            if (x < BoardProcyon.this.cols * 15 && y < BoardProcyon.this.rows * 15) {
                 if (e.getButton() == 3) {
-                    if (Board.this.field[cRow * Board.this.cols + cCol] > 9) {
+                    if (BoardProcyon.this.field[cRow * BoardProcyon.this.cols + cCol] > 9) {
                         rep = true;
-                        if (Board.this.field[cRow * Board.this.cols + cCol] <= 19) {
-                            if (Board.this.mines_left > 0) {
-                                final int[] access$300 = Board.this.field;
-                                final int n = cRow * Board.this.cols + cCol;
+                        if (BoardProcyon.this.field[cRow * BoardProcyon.this.cols + cCol] <= 19) {
+                            if (BoardProcyon.this.mines_left > 0) {
+                                final int[] access$300 = BoardProcyon.this.field;
+                                final int n = cRow * BoardProcyon.this.cols + cCol;
                                 access$300[n] += 10;
-                                Board.this.mines_left--;
-                                Board.this.statusbar.setText(Integer.toString(Board.this.mines_left));
+                                BoardProcyon.this.mines_left--;
+                                BoardProcyon.this.statusbar.setText(Integer.toString(BoardProcyon.this.mines_left));
                             }
                             else {
-                                Board.this.statusbar.setText("No marks left");
+                                BoardProcyon.this.statusbar.setText("No marks left");
                             }
                         }
                         else {
-                            final int[] access$301 = Board.this.field;
-                            final int n2 = cRow * Board.this.cols + cCol;
+                            final int[] access$301 = BoardProcyon.this.field;
+                            final int n2 = cRow * BoardProcyon.this.cols + cCol;
                             access$301[n2] -= 10;
-                            Board.this.mines_left++;
-                            Board.this.statusbar.setText(Integer.toString(Board.this.mines_left));
+                            BoardProcyon.this.mines_left++;
+                            BoardProcyon.this.statusbar.setText(Integer.toString(BoardProcyon.this.mines_left));
                         }
                     }
                 }
                 else {
-                    if (Board.this.field[cRow * Board.this.cols + cCol] > 19) {
+                    if (BoardProcyon.this.field[cRow * BoardProcyon.this.cols + cCol] > 19) {
                         return;
                     }
-                    if (Board.this.field[cRow * Board.this.cols + cCol] > 9 && Board.this.field[cRow * Board.this.cols + cCol] < 29) {
-                        final int[] access$302 = Board.this.field;
-                        final int n3 = cRow * Board.this.cols + cCol;
+                    if (BoardProcyon.this.field[cRow * BoardProcyon.this.cols + cCol] > 9 && BoardProcyon.this.field[cRow * BoardProcyon.this.cols + cCol] < 29) {
+                        final int[] access$302 = BoardProcyon.this.field;
+                        final int n3 = cRow * BoardProcyon.this.cols + cCol;
                         access$302[n3] -= 10;
                         rep = true;
-                        if (Board.this.field[cRow * Board.this.cols + cCol] == 9) {
-                            Board.this.inGame = false;
+                        if (BoardProcyon.this.field[cRow * BoardProcyon.this.cols + cCol] == 9) {
+                            BoardProcyon.this.inGame = false;
                         }
-                        if (Board.this.field[cRow * Board.this.cols + cCol] == 0) {
-                            Board.this.find_empty_cells(cRow * Board.this.cols + cCol);
+                        if (BoardProcyon.this.field[cRow * BoardProcyon.this.cols + cCol] == 0) {
+                            BoardProcyon.this.find_empty_cells(cRow * BoardProcyon.this.cols + cCol);
                         }
                     }
                 }
                 if (rep) {
-                    Board.this.repaint();
+                    BoardProcyon.this.repaint();
                 }
             }
         }
