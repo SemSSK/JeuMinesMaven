@@ -1,10 +1,7 @@
-package minesDecompiledDotClass;
-
-
-
 /*
  * Decompiled with CFR 0.150.
  */
+package mines;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -15,7 +12,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class BoardCFR extends JPanel {
+public class Board
+extends JPanel {
     private static final long serialVersionUID = 6195235521361212179L;
     private final int NUM_IMAGES = 13;
     private final int CELL_SIZE = 15;
@@ -39,10 +37,10 @@ public class BoardCFR extends JPanel {
     private int all_cells;
     private JLabel statusbar;
 
-    public BoardCFR(JLabel statusbar) {
+    public Board(JLabel statusbar) {
         this.statusbar = statusbar;
-        this.img = new Image[13]; // (1)
-        for (int i = 0; i < 13; ++i) { // (1)
+        this.img = new Image[13];
+        for (int i = 0; i < 13; ++i) {
             this.img[i] = new ImageIcon("images/" + i + ".gif").getImage();
         }
         this.setDoubleBuffered(true);
@@ -50,8 +48,8 @@ public class BoardCFR extends JPanel {
         this.newGame();
     }
 
-    public void newGame() { // (2) decaration et initialisation dans la méme ligne.
-        int i = 0; 
+    public void newGame() {
+        int i = 0;
         int position = 0;
         int cell = 0;
         Random random = new Random();
@@ -65,15 +63,15 @@ public class BoardCFR extends JPanel {
         this.statusbar.setText(Integer.toString(this.mines_left));
         i = 0;
         while (i < this.mines) {
-            position = (int)((double)this.all_cells * random.nextDouble()); // ajout de cast a double
-            if (position >= this.all_cells || this.field[position] == 19) continue; // ajout d'un if permettant de relancer la boucle sans executer le reste du code 
+            position = (int)((double)this.all_cells * random.nextDouble());
+            if (position >= this.all_cells || this.field[position] == 19) continue;
             int current_col = position % this.cols;
             this.field[position] = 19;
             ++i;
             if (current_col > 0) {
                 cell = position - 1 - this.cols;
-                if (cell >= 0 && this.field[cell] != 19) { // Concatenation des ifs en une seule expression
-                    int n = cell; // utilisation d'une variable intermediaire pour indexé les tableau 
+                if (cell >= 0 && this.field[cell] != 19) {
+                    int n = cell;
                     this.field[n] = this.field[n] + 1;
                 }
                 if ((cell = position - 1) >= 0 && this.field[cell] != 19) {
@@ -93,7 +91,7 @@ public class BoardCFR extends JPanel {
                 int n = cell;
                 this.field[n] = this.field[n] + 1;
             }
-            if (current_col >= this.cols - 1) continue; // tranformation de if(current_col < (cols - 1)) en continue
+            if (current_col >= this.cols - 1) continue;
             cell = position - this.cols + 1;
             if (cell >= 0 && this.field[cell] != 19) {
                 int n = cell;
@@ -180,7 +178,7 @@ public class BoardCFR extends JPanel {
     public void paint(Graphics g) {
         int cell = 0;
         int uncover = 0;
-        for (int i = 0; i < this.rows; ++i) { // remplacement de i++ par ++i (optimisation)
+        for (int i = 0; i < this.rows; ++i) {
             for (int j = 0; j < this.cols; ++j) {
                 cell = this.field[i * this.cols + j];
                 if (this.inGame && cell == 9) {
@@ -214,7 +212,7 @@ public class BoardCFR extends JPanel {
     }
 
     class MinesAdapter
-            extends MouseAdapter {
+    extends MouseAdapter {
         MinesAdapter() {
         }
 
@@ -225,55 +223,56 @@ public class BoardCFR extends JPanel {
             int cCol = x / 15;
             int cRow = y / 15;
             boolean rep = false;
-            if (!BoardCFR.this.inGame) {
-                BoardCFR.this.newGame();
-                BoardCFR.this.repaint();
+            if (!Board.this.inGame) {
+                Board.this.newGame();
+                Board.this.repaint();
             }
-            if (x < BoardCFR.this.cols * 15 && y < BoardCFR.this.rows * 15) {
+            if (x < Board.this.cols * 15 && y < Board.this.rows * 15) {
                 if (e.getButton() == 3) {
-                    if (BoardCFR.this.field[cRow * BoardCFR.this.cols + cCol] > 9) {
+                    if (Board.this.field[cRow * Board.this.cols + cCol] > 9) {
                         rep = true;
-                        if (BoardCFR.this.field[cRow * BoardCFR.this.cols + cCol] <= 19) {
-                            if (BoardCFR.this.mines_left > 0) {
-                                int[] arrn = BoardCFR.this.field;
-                                int n = cRow * BoardCFR.this.cols + cCol;
+                        if (Board.this.field[cRow * Board.this.cols + cCol] <= 19) {
+                            if (Board.this.mines_left > 0) {
+                                int[] arrn = Board.this.field;
+                                int n = cRow * Board.this.cols + cCol;
                                 arrn[n] = arrn[n] + 10;
-                                BoardCFR.this.mines_left--;
-                                BoardCFR.this.statusbar.setText(Integer.toString(BoardCFR.this.mines_left));
+                                Board board = Board.this;
+                                board.mines_left = board.mines_left - 1;
+                                Board.this.statusbar.setText(Integer.toString(Board.this.mines_left));
                             } else {
-                                BoardCFR.this.statusbar.setText("No marks left");
+                                Board.this.statusbar.setText("No marks left");
                             }
                         } else {
-                            int[] arrn = BoardCFR.this.field;
-                            int n = cRow * BoardCFR.this.cols + cCol;
+                            int[] arrn = Board.this.field;
+                            int n = cRow * Board.this.cols + cCol;
                             arrn[n] = arrn[n] - 10;
-                            BoardCFR.this.mines_left++;
-                            BoardCFR.this.statusbar.setText(Integer.toString(BoardCFR.this.mines_left));
+                            Board board = Board.this;
+                            board.mines_left = board.mines_left + 1;
+                            Board.this.statusbar.setText(Integer.toString(Board.this.mines_left));
                         }
                     }
                 } else {
-                    if (BoardCFR.this.field[cRow * BoardCFR.this.cols + cCol] > 19) {
+                    if (Board.this.field[cRow * Board.this.cols + cCol] > 19) {
                         return;
                     }
-                    if (BoardCFR.this.field[cRow * BoardCFR.this.cols + cCol] > 9 && BoardCFR.this.field[cRow * BoardCFR.this.cols + cCol] < 29) {
-                        int[] arrn = BoardCFR.this.field;
-                        int n = cRow * BoardCFR.this.cols + cCol;
+                    if (Board.this.field[cRow * Board.this.cols + cCol] > 9 && Board.this.field[cRow * Board.this.cols + cCol] < 29) {
+                        int[] arrn = Board.this.field;
+                        int n = cRow * Board.this.cols + cCol;
                         arrn[n] = arrn[n] - 10;
                         rep = true;
-                        if (BoardCFR.this.field[cRow * BoardCFR.this.cols + cCol] == 9) {
-                            BoardCFR.this.inGame = false;
+                        if (Board.this.field[cRow * Board.this.cols + cCol] == 9) {
+                            Board.this.inGame = false;
                         }
-                        if (BoardCFR.this.field[cRow * BoardCFR.this.cols + cCol] == 0) {
-                            BoardCFR.this.find_empty_cells(cRow * BoardCFR.this.cols + cCol);
+                        if (Board.this.field[cRow * Board.this.cols + cCol] == 0) {
+                            Board.this.find_empty_cells(cRow * Board.this.cols + cCol);
                         }
                     }
                 }
                 if (rep) {
-                    BoardCFR.this.repaint();
+                    Board.this.repaint();
                 }
             }
         }
     }
 }
-
 

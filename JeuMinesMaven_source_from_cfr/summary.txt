@@ -1,0 +1,2 @@
+Summary for /www/javadecompilers/app/public/data/18.05.23/11784d0a1f6db967f2ebe3ceeeab40be/JeuMinesMaven.jar
+Decompiled with CFR 0.150
