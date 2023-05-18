@@ -89,15 +89,15 @@ ce qui explique que les fichiers .jar ne sont qu'un moyen de compréssé plusieu
 
 le diagramme et generer en utilisant l'IDE intelliJ
 
-<div style="text-align:center">
+<p align="center">
   <img src="./../SourceDiagramme.png"/>
   generer depuis le code source
-</div>
+</p>
 
-<div style="text-align:center">
+<p align="center">
   <img src="./../DecompiledDiagramm.png" />
   generer depuis le code decompiler
-</div>
+</p>
 
 les différence notable entre les deux version sont :
 
