@@ -1,3 +1,17 @@
+<p align="center">
+<h1> Retroingenierie <h1>
+<h2> Auteurs <h2>
+<h4>Sem Saada Khelkhal</h4>
+<h4>Labraoui Mohamed Wassim<h4>
+</p>
+
+- [Retro-ingénirie](#retro-ingénirie)
+  - [Classe Mine](#classe-mine)
+  - [Class Board](#class-board)
+  - [Decompilation par fichier .jar](#decompilation-par-fichier-jar)
+- [Retro-conception](#retro-conception)
+
+
 # Retro-ingénirie
 
 cette section portera sur la comparaison entre le code ecrit manuellement et le code generer par la décompilation des fichier .class. 5 decompilateurs seront utiliser qui sont : CFR, Fernflower, Jadx, JDCore, Procyon ,afin mettre en lumiére les différence entre chaqu'un d'entre eux.
@@ -91,12 +105,12 @@ le diagramme et generer en utilisant l'IDE intelliJ
 
 <p align="center">
   <img src="./../SourceDiagramme.png"/>
-  generer depuis le code source
+  <b>generer depuis le code source</b>
 </p>
 
 <p align="center">
   <img src="./../DecompiledDiagramm.png" />
-  generer depuis le code decompiler
+  <b>generer depuis le code decompiler</b>
 </p>
 
 les différence notable entre les deux version sont :
